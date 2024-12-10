@@ -1,4 +1,4 @@
-package org.jsonpath.adventofcode_1;
+package org.adventofcode.adventofcode_1;
 
 import java.io.IOException;
 import java.nio.file.Files;
