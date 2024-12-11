@@ -22,7 +22,7 @@ public class AdventOfCode_2 {
                 break;
             }
         }
-        return isDiffExceded;
+        return !isDiffExceded;
     }
 
     public static boolean isDecreasing(List<Integer> listOfNumbers) {
@@ -53,12 +53,29 @@ public class AdventOfCode_2 {
             List<String> lines = Files.readAllLines(Paths.get(filePath));
             for (var line : lines) {
                 List<Integer> lineAsList = Arrays.stream(line.split(" ")).map(Integer::valueOf).toList();
-                if ((isIncreasing(lineAsList) || isDecreasing(lineAsList)) && !checkIfDiffGreaterThan3(lineAsList)) {
+                if ((isIncreasing(lineAsList) || isDecreasing(lineAsList)) && checkIfDiffGreaterThan3(lineAsList)) {
                     safeReports++;
+                } else{
+                    //part two check for additional safe reports
+                    safeReports += checkIfRemovingOneLevelCreatesSafeReport(lineAsList);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return safeReports;
+    }
+    public static int checkIfRemovingOneLevelCreatesSafeReport(List<Integer> lineAsList){
+        var safeReports = 0;
+        for(var j = 0; j < lineAsList.size(); j++){
+            var value = lineAsList.get(j);
+            List<Integer> reducedList = new ArrayList<>(lineAsList);
+            reducedList.remove(j);
+            if ((isIncreasing(reducedList) || isDecreasing(reducedList)) && checkIfDiffGreaterThan3(reducedList)) {
+                safeReports++;
+                break;
+            }
+            reducedList.add(j, value);
         }
         return safeReports;
     }
